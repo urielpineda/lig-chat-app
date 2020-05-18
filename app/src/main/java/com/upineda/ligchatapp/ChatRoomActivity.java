@@ -1,69 +1,95 @@
 package com.upineda.ligchatapp;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.upineda.ligchatapp.adapter.MessageAdapter;
+import com.upineda.ligchatapp.model.Message;
+import com.upineda.ligchatapp.model.User;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * 05-18-2020
+ *
+ * @author Uriel Pineda
+ */
 public class ChatRoomActivity extends AppCompatActivity {
 
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
-    private FirebaseAuth firebaseAuth;
-    private String temp_key;
-    private String username;
-    private MessageAdapter mApapter;
-    private ArrayList<String> mArrData;
-    ArrayList mArrUser = new ArrayList<String>();
-    private ListView mListView;
+    private User user;
+    private ArrayList<Message> messageList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
 
-    ArrayList msg = new ArrayList<String>();
+    static String DEFAULT_ROOM = "DefaultRoom";
+    static String FIREBASE_MESSAGE = "msg";
+    static String FIREBASE_MESSAGE_SENT_BY = "name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_room);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        final FirebaseUser user = firebaseAuth.getCurrentUser();
         Button sendButton = findViewById(R.id.sendButton);
-        final EditText message = findViewById(R.id.message);
-        username = getIntent().getExtras().get("username").toString();
-        root = FirebaseDatabase.getInstance().getReference().child("DefaultRoom");
+        final EditText messageField = findViewById(R.id.message);
+        user = (User) getIntent().getSerializableExtra(SetupViewActivity.USER_DATA);
+        root = FirebaseDatabase.getInstance().getReference().child(DEFAULT_ROOM);
         Button logoutButton = findViewById(R.id.logoutButton);
+
+        //Recycler View
+        recyclerView = findViewById(R.id.recyclerListView);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        mAdapter = new MessageAdapter(messageList);
+
+        recyclerView.setAdapter(mAdapter);
+
+        // listen to the database for new messages
+        root.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                // new message received, update the conversation
+                append_chat_conversation(dataSnapshot);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {/*noop*/}
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {/*noop*/}
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {/*noop*/}
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {/*noop*/}
+        });
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent signupIntent = new Intent(getApplicationContext(), SignupViewActivity.class);
+                startActivity(signupIntent);
                 finish();
             }
         });
@@ -71,128 +97,53 @@ public class ChatRoomActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Map<String, Object> map = new HashMap<String,Object>();
-                temp_key = root.push().getKey();
+                Message messageItem = new Message(messageField.getText().toString(), user.getUsername());
+                Map<String, Object> map = new HashMap<String, Object>();
+
+                // block empty messages
+                if (messageItem.getMessage().isEmpty())
+                    return;
+
+                // clear the text field
+                messageField.setText("");
+
+                // generate unique key and push message to database
+                String temp_key = root.push().getKey();
                 root.updateChildren(map);
 
                 DatabaseReference message_root = root.child(temp_key);
-                Map<String, Object> map2 = new HashMap<String,Object>();
+                Map<String, Object> map2 = new HashMap<String, Object>();
 
-                map2.put("name",username);
-                map2.put("msg",message.getText().toString());
+                map2.put(FIREBASE_MESSAGE_SENT_BY, messageItem.getUsername());
+                map2.put(FIREBASE_MESSAGE, messageItem.getMessage());
 
                 message_root.updateChildren(map2);
-                message.setText("");
             }
         });
-
-        root.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                append_chat_conversation(dataSnapshot);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        Toast.makeText(ChatRoomActivity.this, " logged in"+ user.getDisplayName(), Toast.LENGTH_SHORT).show();
     }
 
-    private String chat_msg, chat_user_name;
+    // This function is triggered when data is added in messages in the database
     private void append_chat_conversation(DataSnapshot dataSnapshot) {
+        String chat_msg, chat_user_name;
         Iterator i = dataSnapshot.getChildren().iterator();
-        while(i.hasNext()){
-            chat_msg = (String) ((DataSnapshot)i.next()).getValue();
-            chat_user_name = (String) ((DataSnapshot)i.next()).getValue();
-           // TextView messages = findViewById(R.id.messages);
-            msg.add(chat_msg);
-            if(chat_user_name.equals(username))
-                chat_user_name = "You";
-            mArrUser.add(chat_user_name);
-           // messages.append(chat_user_name + " : " + chat_msg + " \n");
+
+        // loop through the data and append it the the messageList
+        while (i.hasNext()) {
+            chat_msg = (String) ((DataSnapshot) i.next()).getValue();
+            chat_user_name = (String) ((DataSnapshot) i.next()).getValue();
+
+            // Check if message is sent to self
+            if (chat_user_name.equals(user.getUsername()))
+                chat_user_name = Message.SENT_BY_SELF;
+
+            Message messageItem = new Message(chat_msg, chat_user_name);
+
+            messageList.add(messageItem);
         }
-//        final ScrollView scroll = findViewById(R.id.scroll);
-//        scroll.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                scroll.fullScroll(View.FOCUS_DOWN);
-//            }
-//        });
 
-
-        mListView = (ListView) findViewById(R.id.listView);
-        mArrData = msg;
-
-        mApapter = new MessageAdapter(ChatRoomActivity.this, mArrData,mArrUser);
-        mListView.setAdapter(mApapter);
-        mApapter.notifyDataSetChanged();
-        mListView.setSelection(mApapter.getCount());
+        // notify recyclerview that data has been updated
+        mAdapter.notifyDataSetChanged();
+        // scroll down to the latest message
+        recyclerView.getLayoutManager().scrollToPosition(messageList.size() - 1);
     }
-
-
-    public class MessageAdapter extends BaseAdapter {
-
-        private Context mContext;
-        private ArrayList<String> messages;
-        private ArrayList<String> users;
-
-        public MessageAdapter(Context context, ArrayList arrMessages, ArrayList arrUsers) {
-            super();
-            mContext = context;
-            messages = arrMessages;
-            users = arrUsers;
-        }
-
-        public int getCount() {
-            // return the number of records
-            return messages.size();
-        }
-
-        // getView method is called for each item of ListView
-        public View getView(int position, View view, ViewGroup parent) {
-            // inflate the layout for each item of listView
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//
-            if(users.get(position).equals("You"))
-                view = inflater.inflate(R.layout.right_chat_bubble, parent, false);
-            else
-           view = inflater.inflate(R.layout.left_chat_bubble,parent,false);
-
-            // get the reference of textView and button
-            TextView txtSchoolTitle = (TextView) view.findViewById(R.id.rightMessage);
-            TextView txtUser = (TextView) view.findViewById(R.id.sentBy);
-
-            // Set the title and button name
-            txtSchoolTitle.setText(messages.get(position));
-            txtUser.setText(users.get(position));
-
-            return view;
-        }
-
-        public Object getItem(int position) {
-            // TODO Auto-generated method stub
-            return position;
-        }
-
-        public long getItemId(int position) {
-            // TODO Auto-generated method stub
-            return position;
-        }}
 }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,18 +17,27 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.upineda.ligchatapp.model.User;
 
-public class LoginActivity extends SetupActivity {
+/**
+ * This activity handles the Log in logic
+ * and the communication with Firebase
+ *
+ * 05-18-2020
+ * @author  Uriel Pineda
+ */
+public class LoginViewActivity extends SetupViewActivity {
 
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
     private FirebaseAuth firebaseAuth;
 
+    // Sign-up button click listener
     @Override
-    public View.OnClickListener button2OnClickListener() {
+    public View.OnClickListener buttonTwoOnClickListener() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),SignupActivity.class);
+                Intent i = new Intent(getApplicationContext(), SignupViewActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -38,49 +46,53 @@ public class LoginActivity extends SetupActivity {
 
     @Override
     public void setSetupViews(Button loginButton, Button signupButton) {
-        loginButton.setText("Log in");
+        loginButton.setText(R.string.log_in);
         signupButton.setText(R.string.sign_up_underline);
     }
 
+    // Log-in button click listener
     @Override
-    public View.OnClickListener button1OnClickListener() {
+    public View.OnClickListener buttonOneOnClickListener() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // check credentials
-                setClickableButtons(false);
                 final String username = getUsername();
                 final String password = getPassword();
+
+                // set Clickable to false to avoid multiple executions at the same time
+                setClickableButtons(false);
 
                 root.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
+                        // validate the data
                         if (snapshot.hasChild(username) && validate(username, password)) {
-                            String email = snapshot.child(username).getValue().toString();
+                            // we use the user's placeholder email to take advantage of firebase's
+                            // secure authentication
+                            final String email = snapshot.child(username).getValue().toString();
 
+                            // initiate log-in
                             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isSuccessful()) {
-                                        Toast.makeText(LoginActivity.this, "SUCCESS log in", Toast.LENGTH_SHORT).show();
-
+                                    // log in is successful, pass user data to the chat room
+                                    if (task.isSuccessful()) {
+                                        User user = new User(username, password, email);
                                         Intent i = new Intent(getApplicationContext(), ChatRoomActivity.class);
-                                        i.putExtra("username", username);
+                                        i.putExtra(USER_DATA, user);
                                         startActivity(i);
                                         finish();
-                                    }
-                                    else
+                                    } else
                                         displayError();
                                 }
                             });
-                        }
-                        else
+                        } else
                             displayError();
-
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {}
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
                 });
             }
         };
@@ -90,6 +102,6 @@ public class LoginActivity extends SetupActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebaseAuth = FirebaseAuth.getInstance();
-        root = FirebaseDatabase.getInstance().getReference().child("Accounts");
+        root = FirebaseDatabase.getInstance().getReference().child(FIREBASE_ACCOUNTS);
     }
 }

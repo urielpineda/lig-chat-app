@@ -1,5 +1,14 @@
 <resources>
-    <string name="app_name">LIG Chat App</string>
+    <string name="app_name">Chat app</string>
     <string name="log_in_underline"><u>Log in</u></string>
     <string name="sign_up_underline"><u>Sign up</u></string>
+    <string name="log_in">Log in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="incorrect_value">Value is incorrect</string>
+    <string name="user_name">User name</string>
+    <string name="password">password</string>
+    <string name="send">send</string>
+    <string name="new_message">Start a new message</string>
+    <string name="log_out">Log out</string>
+    <string name="terms_and_conditions">By signing up, you agree to the Terms of  Service and Privacy Policy, including Cookie Use. Others will be able to find you by searching for your email address or phone  number when provided.</string>
 </resources>

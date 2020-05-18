@@ -1,6 +1,13 @@
-package com.upineda.ligchatapp.models;
+package com.upineda.ligchatapp.model;
 
 public class Message {
+    public static String SENT_BY_SELF = "You";
+
+    public Message(String message, String username) {
+        this.message = message;
+        this.username = username;
+    }
+
     public String getMessage() {
         return message;
     }

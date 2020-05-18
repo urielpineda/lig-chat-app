@@ -7,6 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * Main landing page with two options, Log-in or Sign-up
+ *
+ * 05-18-2020
+ * @author  Uriel Pineda
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -14,20 +20,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.landing_page);
 
-        Button signupButton = findViewById(R.id.button2);
         Button loginButton = findViewById(R.id.button1);
+        Button signupButton = findViewById(R.id.button2);
 
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent signupIntent = new Intent(getApplicationContext(),SignupActivity.class);
+                Intent signupIntent = new Intent(getApplicationContext(), SignupViewActivity.class);
                 startActivity(signupIntent);
             }
         });
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent loginIntent = new Intent(getApplicationContext(),LoginActivity.class);
+                Intent loginIntent = new Intent(getApplicationContext(), LoginViewActivity.class);
                 startActivity(loginIntent);
             }
         });

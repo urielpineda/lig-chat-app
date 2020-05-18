@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -11,7 +11,6 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
 
         <ImageView
             android:id="@+id/imageView2"
@@ -24,20 +23,18 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         <TextView
             android:id="@+id/rightMessage"
             android:layout_width="wrap_content"
-            android:layout_gravity="right"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:layout_marginRight="0dp"
             android:background="@drawable/rounded_button_light_green"
             android:fontFamily="@font/arialbold"
             android:letterSpacing="0.1"
             android:padding="12dp"
             android:stateListAnimator="@null"
-            android:text="Sign up"
+            android:text=""
             android:textAllCaps="false"
             android:textColor="#ffffff"
-            android:textSize="18sp" />
-
-
+            android:textSize="16sp" />
     </LinearLayout>
 
     <TextView
@@ -46,8 +43,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:fontFamily="@font/arialregular"
-        android:letterSpacing="0.1"
         android:gravity="left"
-        android:text="You" />
-
+        android:letterSpacing="0.1"
+        android:text="" />
 </LinearLayout>
