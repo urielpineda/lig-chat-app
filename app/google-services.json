@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "277432190992",
+    "firebase_url": "https://chat-app-5b9cf.firebaseio.com",
+    "project_id": "chat-app-5b9cf",
+    "storage_bucket": "chat-app-5b9cf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:277432190992:android:b7c6fd80c4f63ab4126295",
+        "android_client_info": {
+          "package_name": "com.upineda.ligchatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "277432190992-r7narg3f17ibnbqase7rrvja5g4q82be.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXBdXAlHSAEQxFzXO3wP0wvYSXHmA2Zr4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "277432190992-r7narg3f17ibnbqase7rrvja5g4q82be.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

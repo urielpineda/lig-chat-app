@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/arialbold"
+            android:includeFontPadding="false"
+            android:letterSpacing="0.1"
+            android:text="Chat app"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <EditText
+            android:id="@+id/usernameField"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/rounded_button_field"
+            android:ems="10"
+            android:fontFamily="@font/arialregular"
+            android:hint="User name"
+            android:inputType="textPersonName"
+            android:paddingStart="8dp"
+            android:letterSpacing="0.1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColorHint="#647787"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+        <EditText
+            android:id="@+id/passwordField"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/rounded_button_field"
+            android:ems="10"
+            android:fontFamily="@font/arialregular"
+            android:hint="password"
+            android:inputType="textPassword"
+            android:letterSpacing="0.1"
+            android:paddingStart="8dp"
+            android:textColorHint="#647787"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/incorrectValue" />
+
+        <TextView
+            android:id="@+id/incorrectValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:fontFamily="@font/arialregular"
+            android:letterSpacing="0.1"
+            android:paddingStart="8dp"
+            android:text="Value is incorrect"
+            android:textColor="#cc3333"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/usernameField"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <TextView
+            android:id="@+id/incorrectValue1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/arialregular"
+            android:letterSpacing="0.1"
+            android:paddingStart="8dp"
+            android:text="Value is incorrect"
+            android:textColor="#cc3333"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/passwordField"
+            tools:layout_editor_absoluteX="61dp" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/rounded_button_light_green"
+            android:fontFamily="@font/arialbold"
+            android:letterSpacing="0.1"
+            android:stateListAnimator="@null"
+            android:text="Button 1"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/incorrectValue1" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/arialregular"
+            android:letterSpacing="0.1"
+            android:padding="0dp"
+            android:stateListAnimator="@null"
+            android:text="Button 2"
+            android:textAllCaps="false"
+            android:textColor="#647787"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button1" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="94dp"
+            android:layout_margin="16dp"
+            android:fontFamily="@font/arialregular"
+            android:letterSpacing="0.1"
+            android:textColor="#647787"
+            android:text="By signing up, you agree to the Terms of  Service and Privacy Policy, including Cookie Use. Others will be able to find you by searching for your email address or phone  number when provided."
+            app:layout_constraintTop_toBottomOf="@+id/button2"
+            tools:layout_editor_absoluteX="16dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

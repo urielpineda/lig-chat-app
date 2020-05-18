@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">LIG Chat App</string>
+    <string name="log_in_underline"><u>Log in</u></string>
+    <string name="sign_up_underline"><u>Sign up</u></string>
+</resources>
