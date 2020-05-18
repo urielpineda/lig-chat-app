@@ -19,13 +19,13 @@ and is notified everytime time a new message is received.
 Screenshots
 <br>
 <h5> Portrait</h5>
-<img src="screenshots/landing_portrait.png" width=300>
-<img src="screenshots/signup_portrait.png" width=300>
-<img src="screenshots/signup_error_portrait.png" width=300>
-<img src="screenshots/login_portrait.png" width=300>
-<img src="screenshots/chat_portrait.png" width=300>
+<img src="screenshots/landing_portrait.png" width=250>
+<img src="screenshots/signup_portrait.png" width=250>
+<img src="screenshots/signup_error_portrait.png" width=250>
+<img src="screenshots/login_portrait.png" width=250>
+<img src="screenshots/chat_portrait.png" width=250>
 
 <h5> Landscape</h5>
-<img src="screenshots/landing_landscape.png" width=300>
-<img src="screenshots/signup_landscape.png" width=300>
-<img src="screenshots/chat_landscape.png" width=250>
+<img src="screenshots/landing_landscape.png" width=400>
+<img src="screenshots/signup_landscape.png" width=400>
+<img src="screenshots/chat_landscape.png" width=400>
