@@ -1,4 +1,4 @@
-package com.upineda.ligchatapp;
+package com.upineda.ligchatapp.view;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.upineda.ligchatapp.R;
 
 /**
  * This is the base class of Login and Sign up activities

@@ -1,4 +1,4 @@
-package com.upineda.ligchatapp;
+package com.upineda.ligchatapp.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.upineda.ligchatapp.R;
 import com.upineda.ligchatapp.adapter.MessageAdapter;
 import com.upineda.ligchatapp.model.Message;
 import com.upineda.ligchatapp.model.User;

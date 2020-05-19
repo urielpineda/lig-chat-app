@@ -1,4 +1,4 @@
-package com.upineda.ligchatapp;
+package com.upineda.ligchatapp.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.upineda.ligchatapp.R;
 import com.upineda.ligchatapp.model.User;
 
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import java.util.Map;
 /**
  * This activity handles the Sign up logic
  * and the communication with Firebase
- * <p>
+ *
  * 05-18-2020
  *
  * @author Uriel Pineda
